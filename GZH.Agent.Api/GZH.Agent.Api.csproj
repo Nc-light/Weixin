@@ -107,9 +107,7 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="config\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\GZH.CL\GZH.CL.csproj">
       <Project>{7ae3e236-2afb-4086-89c2-9b03a80eef32}</Project>
