@@ -75,6 +75,11 @@
     <Content Include="api\authorize\redirect_uri.ashx" />
     <Content Include="api\manager\getSn.ashx" />
     <Content Include="api\signature\index.ashx" />
+    <Content Include="config\Log4Net.config" />
+    <Content Include="config\NCD.Db.config" />
+    <Content Include="config\NCD.Weixin.Agent.config" />
+    <Content Include="config\NCD.Weixin.config" />
+    <Content Include="config\NCD.Weixin.Web.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
