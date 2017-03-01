@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GZH.Agent.Api", "GZH.Agent.Api\GZH.Agent.Api.csproj", "{24C3E8F6-98FF-4AF0-8995-A7A72F5E0C1C}"
+	ProjectSection(ProjectDependencies) = postProject
+		{7AE3E236-2AFB-4086-89C2-9B03A80EEF32} = {7AE3E236-2AFB-4086-89C2-9B03A80EEF32}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GZH.CL", "GZH.CL\GZH.CL.csproj", "{7AE3E236-2AFB-4086-89C2-9B03A80EEF32}"
 EndProject
