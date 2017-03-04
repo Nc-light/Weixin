@@ -90,8 +90,8 @@ namespace GZH.CL.JsSDK
             {
                 string url = item.url;
                 bool signature = item.signature;
-                string begin = item.begin.ToString("yyyy-MM-dd");
-                string end = item.end.ToString("yyyy-MM-dd");
+                string begin = item.begin;//.ToString("yyyy-MM-dd");
+                string end = item.end;//.ToString("yyyy-MM-dd");
 
                 //logs.Fatal("url:"+ url + "   checkurl:"+ checkurl+ "   begin:"+ begin+ "   end:"+ end);
 

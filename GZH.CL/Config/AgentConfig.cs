@@ -1,14 +1,18 @@
 ﻿using log4net;
-using SnsApi.Entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web;
 using System.Web.Caching;
 using GZH.CL.Config.Entity;
 using GZH.CL.SnsApi;
+using GZH.CL.Common;
+using System.Collections;
+using GZH.CL.Common.Serialize;
+using System.IO;
+using System.Text;
+using System.Xml.Serialization;
+using System.Xml;
 
 namespace GZH.CL.Config
 {
@@ -18,7 +22,22 @@ namespace GZH.CL.Config
         public CacheItemRemovedCallback onRemove = null;
         private string configPath = GZH.CL.ConfigSetting.weixinAgent;
 
-        public WeixinAgentItem GetItemConfig(int id)
+        /// <summary>
+        /// 获取SN
+        /// </summary>
+        /// <returns></returns>
+        public string CreateSN()
+        {
+            string now = DateTime.Now.Ticks.ToString();
+            return Util.GetRandomString(64, true, true, true, false, now);
+        }
+
+        /// <summary>
+        /// 根据记录ID读取配置内容对象
+        /// </summary>
+        /// <param name="id">记录ID</param>
+        /// <returns>WeixinAgentItem对象</returns>
+        public WeixinAgentItem GetItem(int id)
         {
             WeixinAgentItem r = null;
             WeixinAgent weixinAgent = GetConfig();
@@ -29,12 +48,199 @@ namespace GZH.CL.Config
                  where (weixinAgentItem.id == id)
                  select weixinAgentItem).ToArray<WeixinAgentItem>();
 
-            if(arr.Length>0)
+            if (arr.Length > 0)
                 r = (WeixinAgentItem)arr.GetValue(0);
 
             return r;
         }
 
+        /// <summary>
+        /// 读取全部配置内容对象
+        /// </summary>
+        /// <returns>WeixinAgentItem对象</returns>
+        public List<WeixinAgentItem> GetItems()
+        {
+            List<WeixinAgentItem> r = null;
+            WeixinAgent weixinAgent = GetConfig();
+
+            List<WeixinAgentItem> list =
+                (from weixinAgentItem in weixinAgent.AgentItem
+                 select weixinAgentItem).ToList<WeixinAgentItem>();
+
+            if (list.Count > 0)
+                r = list;
+
+            return r;
+        }
+
+        /// <summary>
+        /// 获取申请用户
+        /// </summary>
+        /// <returns></returns>
+        public List<string> GetAgentName()
+        {
+            List<string> r = null;
+            WeixinAgent weixinAgent = GetConfig();
+
+            List<string> list =
+                (from weixinAgentItem in weixinAgent.AgentItem
+                 select weixinAgentItem.agent).ToList<string>();
+
+            if (list.Count > 0)
+                r = new HashSet<string>(list).ToList<string>();
+            
+            return r; 
+        }
+
+        /// <summary>
+        /// 分派信息配置对象状态
+        /// </summary>
+        /// <returns></returns>
+        public bool GetAgentStatus(WeixinAgentItem item)
+        {
+            string begin = item.begin;//.ToString("yyyy-MM-dd");
+            string end = item.end;//.ToString("yyyy-MM-dd");
+
+            return DateTimeManger.Availability(DateTime.Parse(begin), DateTime.Parse(end), DateTime.Now); ;
+        }
+
+        /// <summary>
+        /// 创建记录时获取配置项ID
+        /// </summary>
+        /// <returns></returns>
+        public int GetIdentity()
+        {
+            WeixinAgent weixinAgent = GetConfig();
+            List<int> list = (from weixinAgentItem in weixinAgent.AgentItem select weixinAgentItem.id).ToList<int>();
+             
+            return this.CreateRandom(list);
+        }
+
+        /// <summary>
+        /// 获取配置项唯一ID
+        /// </summary>
+        /// <param name="list">已有ID列表</param>
+        /// <returns></returns>
+        private int CreateRandom(List<int> list)
+        {
+            Random rdm = new Random();
+            int r = rdm.Next(0, 1000);
+
+            if (list.Contains(r))
+                r = CreateRandom(list);
+
+            return r;
+        }
+
+        /// <summary>
+        /// 添加配置记录
+        /// </summary>
+        /// <param name="item">WeixinAgentItem对象</param>
+        /// <returns>处理结果</returns>
+        public bool AddItem(AgentConfig agentConfig, WeixinAgentItem item)
+        {
+            List<WeixinAgentItem> items = agentConfig.GetItems();
+            items.Add(item);
+
+            WeixinAgent weixinAgent = new WeixinAgent();
+            weixinAgent.AgentItem = items.ToArray();
+
+            string cacheName = GZH.CL.Config.ConfigSetting.GetWeixinWeb().AgentCacheName;
+            if (HttpContext.Current.Cache[cacheName] == null || HttpContext.Current.Cache[cacheName].ToString() == "")
+                return false;
+            else
+            {
+                string path = configPath;
+                XmlHelper.XmlSerializeToFile(weixinAgent, path, System.Text.Encoding.UTF8);
+
+                return true;
+            }
+        }
+
+        /// <summary>
+        /// 修改配置记录
+        /// </summary>
+        /// <param name="item">WeixinAgentItem对象</param>
+        /// <returns>处理结果</returns>
+        public bool UpdateItem(AgentConfig agentConfig, WeixinAgentItem item)
+        {
+            bool r = false;
+
+            if (item != null)
+            {
+                List<WeixinAgentItem> items = agentConfig.GetItems();
+
+                WeixinAgent weixinAgent = new WeixinAgent();
+
+                List<WeixinAgentItem> newItems = new List<WeixinAgentItem>();
+                foreach (WeixinAgentItem i in items)
+                {
+                    if (i.id == item.id)
+                        newItems.Add(item);
+                    else
+                        newItems.Add(i);
+                }
+                weixinAgent.AgentItem = newItems.ToArray();
+
+                string cacheName = GZH.CL.Config.ConfigSetting.GetWeixinWeb().AgentCacheName;
+                if (HttpContext.Current.Cache[cacheName] == null || HttpContext.Current.Cache[cacheName].ToString() == "")
+                    r = false;
+                else
+                {
+                    string path = configPath;
+                    XmlHelper.XmlSerializeToFile(weixinAgent, path, System.Text.Encoding.UTF8);
+
+                    r = true;
+                }
+            }
+
+            return r;
+        }
+
+        /// <summary>
+        /// 删除配置记录
+        /// </summary>
+        /// <param name="id">记录ID</param>
+        /// <returns>处理结果</returns>
+        public bool DelItem(AgentConfig agentConfig, int id)
+        {
+            bool r = false;
+            WeixinAgentItem item = agentConfig.GetItem(id);
+
+            if (item != null)
+            {
+                List<WeixinAgentItem> items = agentConfig.GetItems();
+
+                WeixinAgent weixinAgent = new WeixinAgent();
+                items.Remove(item);
+                weixinAgent.AgentItem = items.ToArray();
+
+                string cacheName = GZH.CL.Config.ConfigSetting.GetWeixinWeb().AgentCacheName;
+                if (HttpContext.Current.Cache[cacheName] == null || HttpContext.Current.Cache[cacheName].ToString() == "")
+                    r = false;
+                else
+                {
+                    string path = configPath;
+                    XmlHelper.XmlSerializeToFile(weixinAgent, path, System.Text.Encoding.UTF8);
+
+                    r = true;
+                }
+            }
+
+            return r;
+        }
+
+        //############################################
+
+
+
+
+        //############################################
+
+        /// <summary>
+        /// 从缓存获取分派信息配置对象（验证分派记录有效性）
+        /// </summary>
+        /// <returns></returns>
         public WeixinAgent GetConfig()
         {
             WeixinAgent r = null;
@@ -80,6 +286,8 @@ namespace GZH.CL.Config
             string[] scopes = new string[] { "snsapi_base", "snsapi_userinfo" };
             foreach (string scope in scopes)
             {
+                //string cacheName = GZH.CL.Config.ConfigSetting.GetWeixinWeb().SnsTokenCacheName + "_" + scope;
+                //if (HttpContext.Current.Cache[cacheName] != null)
                 oauth2Token.RemoveCache(scope);
             }
 

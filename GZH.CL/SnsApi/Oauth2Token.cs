@@ -48,10 +48,17 @@ namespace GZH.CL.SnsApi
             }
         }
 
-        public void RemoveCache(string scope)
+        public void RemoveCache(string scope)   
         {
-            string cacheName = GZH.CL.Config.ConfigSetting.GetWeixinWeb().SnsTokenCacheName + "_" + scope;
-            HttpContext.Current.Cache.Remove(cacheName);
+            try
+            {
+                string cacheName = GZH.CL.Config.ConfigSetting.GetWeixinWeb().SnsTokenCacheName + "_" + scope;
+                if (HttpContext.Current.Cache[cacheName] != null)
+                {
+                    HttpContext.Current.Cache.Remove(cacheName);
+                }
+            }
+            catch (Exception ex) { }
         }
 
         private void RemovedCallback(string key, object value, CacheItemRemovedReason reason)

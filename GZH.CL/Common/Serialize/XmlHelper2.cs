@@ -6,9 +6,9 @@ using System.Xml.Serialization;
 
 namespace GZH.CL.Common.Serialize
 {
-    public static class XmlHelper
+    public class XmlHelper2
     {
-        private static void XmlSerializeInternal(Stream stream, object o, Encoding encoding)
+        private void XmlSerializeInternal(Stream stream, object o, Encoding encoding)
         {
             if (o == null)
                 throw new ArgumentNullException("o");
@@ -40,7 +40,7 @@ namespace GZH.CL.Common.Serialize
         /// <param name="o">要序列化的对象</param>
         /// <param name="encoding">编码方式</param>
         /// <returns>序列化产生的XML字符串</returns>
-        public static string XmlSerialize(object o, Encoding encoding)
+        public string XmlSerialize(object o, Encoding encoding)
         {
             using (MemoryStream stream = new MemoryStream())
             {
@@ -60,17 +60,19 @@ namespace GZH.CL.Common.Serialize
         /// <param name="o">要序列化的对象</param>
         /// <param name="path">保存文件路径</param>
         /// <param name="encoding">编码方式</param>
-        public static void XmlSerializeToFile(object o, string path, Encoding encoding)
+        public void XmlSerializeToFile(object o, string path, Encoding encoding)
         {
             if (string.IsNullOrEmpty(path))
                 throw new ArgumentNullException("path");
 
-            using (FileStream file = new FileStream(path, FileMode.Create, FileAccess.Write))
-            {
-                XmlSerializeInternal(file, o, encoding);
+            FileStream fs = File.Create(path);
+            XmlSerializeInternal(fs, o, encoding);
+            fs.Close();
 
-                file.Close();
-            }
+            //using (FileStream file = new FileStream(path, FileMode.Create, FileAccess.Write))
+            //{
+            //    XmlSerializeInternal(file, o, encoding);
+            //}
         }
 
         /// <summary>
@@ -79,7 +81,7 @@ namespace GZH.CL.Common.Serialize
         /// <param name="o">要序列化的对象</param>
         /// <param name="path">保存文件路径</param>
         /// <param name="encoding">编码方式</param>
-        public static void XmlSerializeToFile(object o, string path, Encoding encoding, FileMode mode)
+        public void XmlSerializeToFile(object o, string path, Encoding encoding, FileMode mode)
         {
             if (string.IsNullOrEmpty(path))
                 throw new ArgumentNullException("path");

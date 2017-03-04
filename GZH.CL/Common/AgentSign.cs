@@ -36,7 +36,7 @@ namespace GZH.CL.Common
         public static bool CheckRequestSign(string request_sign, string nonce_str, string timestamp, int id)
         {
             bool r = false;
-            string sn = new GZH.CL.Config.AgentConfig().GetItemConfig(id).sn;
+            string sn = new GZH.CL.Config.AgentConfig().GetItem(id).sn;
 
             Hashtable ht = new Hashtable();
             ht.Add("nonce_str", nonce_str);
@@ -53,7 +53,7 @@ namespace GZH.CL.Common
 
         public static void SetSign(int id, out string nonce_str, out string timestamp, out string sign)
         {
-            string sn = new GZH.CL.Config.AgentConfig().GetItemConfig(id).sn;
+            string sn = new GZH.CL.Config.AgentConfig().GetItem(id).sn;
             nonce_str = Util.GetRandomString(32, true, true, true, false, "");
             timestamp = Util.GetTimestamp();
 

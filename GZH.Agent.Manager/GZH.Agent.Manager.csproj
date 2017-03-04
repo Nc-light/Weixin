@@ -9,12 +9,12 @@
     <ProductVersion>
     </ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{24C3E8F6-98FF-4AF0-8995-A7A72F5E0C1C}</ProjectGuid>
+    <ProjectGuid>{54AC893F-0FBE-4AD5-B689-A8C2AEB3A80F}</ProjectGuid>
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>GZH.Agent.Api</RootNamespace>
-    <AssemblyName>GZH.Agent.Api</AssemblyName>
+    <RootNamespace>GZH.Agent.Manager</RootNamespace>
+    <AssemblyName>GZH.Agent.Manager</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
@@ -43,14 +43,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="log4net">
-      <HintPath>..\..\OpenSource\log4net.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -69,19 +67,34 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Formatting">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.3\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.3\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Global.asax" />
+    <Content Include="Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_Code\Entity\Agents.cs" />
+    <Content Include="App_Code\Entity\AgentItem.cs" />
+    <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
     <Content Include="packages.config" />
-    <Content Include="api\access_token\index.ashx" />
-    <Content Include="api\authorize\index.ashx" />
-    <Content Include="api\authorize\redirect_uri.ashx" />
-    <Content Include="api\manager\getSn.ashx" />
-    <Content Include="api\signature\index.ashx" />
-    <Content Include="config\Log4Net.config" />
-    <Content Include="config\NCD.Db.config" />
-    <Content Include="config\NCD.Weixin.Agent.config" />
-    <Content Include="config\NCD.Weixin.config" />
-    <Content Include="config\NCD.Weixin.Web.config" />
-    <Content Include="test.ashx" />
-    <Content Include="test2.ashx" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -90,42 +103,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Global.asax" />
-    <Content Include="Web.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="api\access_token\index.ashx.cs">
-      <DependentUpon>index.ashx</DependentUpon>
-    </Compile>
-    <Compile Include="api\authorize\index.ashx.cs">
-      <DependentUpon>index.ashx</DependentUpon>
-    </Compile>
-    <Compile Include="api\authorize\redirect_uri.ashx.cs">
-      <DependentUpon>redirect_uri.ashx</DependentUpon>
-    </Compile>
-    <Compile Include="api\manager\getSn.ashx.cs">
-      <DependentUpon>getSn.ashx</DependentUpon>
-    </Compile>
-    <Compile Include="api\signature\index.ashx.cs">
-      <DependentUpon>index.ashx</DependentUpon>
-    </Compile>
-    <Compile Include="Global.asax.cs">
-      <DependentUpon>Global.asax</DependentUpon>
-    </Compile>
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="test.ashx.cs">
-      <DependentUpon>test.ashx</DependentUpon>
-    </Compile>
-    <Compile Include="test2.ashx.cs">
-      <DependentUpon>test2.ashx</DependentUpon>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup />
-  <ItemGroup>
-    <ProjectReference Include="..\GZH.CL\GZH.CL.csproj">
-      <Project>{7ae3e236-2afb-4086-89c2-9b03a80eef32}</Project>
-      <Name>GZH.CL</Name>
-    </ProjectReference>
+    <Folder Include="App_Data\" />
+    <Folder Include="Controllers\" />
+    <Folder Include="Models\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -140,9 +120,9 @@
         <WebProjectProperties>
           <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>51975</DevelopmentServerPort>
+          <DevelopmentServerPort>52396</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:51975/</IISUrl>
+          <IISUrl>http://localhost:52396/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

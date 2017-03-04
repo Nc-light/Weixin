@@ -39,9 +39,9 @@ namespace GZH.CL.Config.Entity
         public string url { get; set; }
 
         [XmlAttribute(AttributeName = "begin")]
-        public DateTime begin { get; set; }
+        public string begin { get; set; }
 
         [XmlAttribute(AttributeName = "end")]
-        public DateTime end { get; set; }
+        public string end { get; set; }
     }
 }

@@ -31,7 +31,7 @@ namespace GZH.Agent.Api.api.authorize
                 string timestamp = context.Request["timestamp"];
 
                 int id = int.Parse(context.Request["id"]);
-                string sn = new GZH.CL.Config.AgentConfig().GetItemConfig(id).sn;
+                string sn = new GZH.CL.Config.AgentConfig().GetItem(id).sn;
 
                 if (AgentSign.CheckRequestSign(request_sign, nonce_str, timestamp, id))
                 {
@@ -100,8 +100,8 @@ namespace GZH.Agent.Api.api.authorize
             {
                 int id = item.id;
                 bool authorize = item.authorize;
-                string begin = item.begin.ToString("yyyy-MM-dd");
-                string end = item.end.ToString("yyyy-MM-dd");
+                string begin = item.begin;//.ToString("yyyy-MM-dd");
+                string end = item.end;//.ToString("yyyy-MM-dd");
 
                 //logs.Fatal("url:"+ url + "   checkurl:"+ checkurl+ "   begin:"+ begin+ "   end:"+ end);
 

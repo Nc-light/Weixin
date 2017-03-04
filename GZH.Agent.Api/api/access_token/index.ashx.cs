@@ -57,8 +57,8 @@ namespace GZH.Agent.Api.api.access_token
             {
                 int id = item.id;
                 bool token = item.token;
-                string begin = item.begin.ToString("yyyy-MM-dd");
-                string end = item.end.ToString("yyyy-MM-dd");
+                string begin = item.begin;//.ToString("yyyy-MM-dd");
+                string end = item.end;//.ToString("yyyy-MM-dd");
 
                 //logs.Fatal("url:"+ url + "   checkurl:"+ checkurl+ "   begin:"+ begin+ "   end:"+ end);
 
