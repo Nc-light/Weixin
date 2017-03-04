@@ -12,8 +12,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GZH.CL", "GZH.CL\GZH.CL.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GZH.Agent.Manager", "GZH.Agent.Manager\GZH.Agent.Manager.csproj", "{54AC893F-0FBE-4AD5-B689-A8C2AEB3A80F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApplication", "ConsoleApplication\ConsoleApplication.csproj", "{4990AF1E-9348-48A8-824C-3649FBB033A5}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -32,10 +30,6 @@ Global
 		{54AC893F-0FBE-4AD5-B689-A8C2AEB3A80F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{54AC893F-0FBE-4AD5-B689-A8C2AEB3A80F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{54AC893F-0FBE-4AD5-B689-A8C2AEB3A80F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4990AF1E-9348-48A8-824C-3649FBB033A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4990AF1E-9348-48A8-824C-3649FBB033A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4990AF1E-9348-48A8-824C-3649FBB033A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4990AF1E-9348-48A8-824C-3649FBB033A5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
