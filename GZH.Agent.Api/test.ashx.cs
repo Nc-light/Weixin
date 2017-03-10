@@ -81,19 +81,19 @@ namespace GZH.Agent.Api
 
 
             //修改配置记录
-            //WeixinAgentItem item = agentConfig.GetItem(15);
-            //if (item != null)
-            //{
-            //    item.name = "更新NAME";
+            WeixinAgentItem item = agentConfig.GetItem(995);
+            if (item != null)
+            {
+                item.name = "更新NAME-995";
 
-            //    context.Response.Write("update:" + agentConfig.UpdateItem(agentConfig, item)+"\r\n");
-            //}
+                context.Response.Write("update:" + agentConfig.UpdateItem(item) + "\r\n");
+            }
 
-            //List<WeixinAgentItem> items = agentConfig.GetItems();
-            //foreach (WeixinAgentItem i in items)
-            //{
-            //    context.Response.Write("id:" + i.id + "     ***   name:" + i.name + "\n\r");
-            //}
+            List<WeixinAgentItem> items = agentConfig.GetItems();
+            foreach (WeixinAgentItem i in items)
+            {
+                context.Response.Write("id:" + i.id + "     ***   name:" + i.name + "\n\r");
+            }
 
 
             //删除配置记录

@@ -33,6 +33,18 @@ namespace GZH.CL.Config
         }
 
         /// <summary>
+        /// 配置记录记录是否存在
+        /// </summary>
+        /// <param name="id">配置记录ID</param>
+        /// <returns></returns>
+        public bool IsExist(int id)
+        {
+            List<WeixinAgentItem> items = this.GetItems();
+
+            return items.Exists(v => v.id == id);
+        }
+
+        /// <summary>
         /// 根据记录ID读取配置内容对象
         /// </summary>
         /// <param name="id">记录ID</param>
@@ -108,7 +120,7 @@ namespace GZH.CL.Config
         /// 创建记录时获取配置项ID
         /// </summary>
         /// <returns></returns>
-        public int GetIdentity()
+        private int GetIdentity()
         {
             WeixinAgent weixinAgent = GetConfig();
             List<int> list = (from weixinAgentItem in weixinAgent.AgentItem select weixinAgentItem.id).ToList<int>();
@@ -137,24 +149,26 @@ namespace GZH.CL.Config
         /// </summary>
         /// <param name="item">WeixinAgentItem对象</param>
         /// <returns>处理结果</returns>
-        public bool AddItem(AgentConfig agentConfig, WeixinAgentItem item)
+        public WeixinAgentItem AddItem(WeixinAgentItem item)
         {
-            List<WeixinAgentItem> items = agentConfig.GetItems();
+            List<WeixinAgentItem> items = this.GetItems();
             items.Add(item);
 
             WeixinAgent weixinAgent = new WeixinAgent();
             weixinAgent.AgentItem = items.ToArray();
-
-            string cacheName = GZH.CL.Config.ConfigSetting.GetWeixinWeb().AgentCacheName;
-            if (HttpContext.Current.Cache[cacheName] == null || HttpContext.Current.Cache[cacheName].ToString() == "")
-                return false;
-            else
+            
+            try
             {
                 string path = configPath;
                 XmlHelper.XmlSerializeToFile(weixinAgent, path, System.Text.Encoding.UTF8);
-
-                return true;
             }
+            catch (Exception ex)
+            {
+                item = null;
+            }
+            
+
+            return item;
         }
 
         /// <summary>
@@ -162,13 +176,13 @@ namespace GZH.CL.Config
         /// </summary>
         /// <param name="item">WeixinAgentItem对象</param>
         /// <returns>处理结果</returns>
-        public bool UpdateItem(AgentConfig agentConfig, WeixinAgentItem item)
+        public bool UpdateItem(WeixinAgentItem item)
         {
             bool r = false;
 
-            if (item != null)
+            if (item != null && this.IsExist(item.id) )
             {
-                List<WeixinAgentItem> items = agentConfig.GetItems();
+                List<WeixinAgentItem> items = this.GetItems();
 
                 WeixinAgent weixinAgent = new WeixinAgent();
 
@@ -181,16 +195,16 @@ namespace GZH.CL.Config
                         newItems.Add(i);
                 }
                 weixinAgent.AgentItem = newItems.ToArray();
-
-                string cacheName = GZH.CL.Config.ConfigSetting.GetWeixinWeb().AgentCacheName;
-                if (HttpContext.Current.Cache[cacheName] == null || HttpContext.Current.Cache[cacheName].ToString() == "")
-                    r = false;
-                else
+                
+                try
                 {
                     string path = configPath;
                     XmlHelper.XmlSerializeToFile(weixinAgent, path, System.Text.Encoding.UTF8);
-
                     r = true;
+                }
+                catch (Exception ex)
+                {
+                    r = false;
                 }
             }
 
@@ -202,36 +216,58 @@ namespace GZH.CL.Config
         /// </summary>
         /// <param name="id">记录ID</param>
         /// <returns>处理结果</returns>
-        public bool DelItem(AgentConfig agentConfig, int id)
+        public bool DelItem(int id)
         {
             bool r = false;
-            WeixinAgentItem item = agentConfig.GetItem(id);
+            WeixinAgentItem item = this.GetItem(id);
 
             if (item != null)
             {
-                List<WeixinAgentItem> items = agentConfig.GetItems();
+                List<WeixinAgentItem> items = this.GetItems();
 
                 WeixinAgent weixinAgent = new WeixinAgent();
                 items.Remove(item);
                 weixinAgent.AgentItem = items.ToArray();
 
-                string cacheName = GZH.CL.Config.ConfigSetting.GetWeixinWeb().AgentCacheName;
-                if (HttpContext.Current.Cache[cacheName] == null || HttpContext.Current.Cache[cacheName].ToString() == "")
-                    r = false;
-                else
+                try
                 {
                     string path = configPath;
                     XmlHelper.XmlSerializeToFile(weixinAgent, path, System.Text.Encoding.UTF8);
-
                     r = true;
+                }
+                catch (Exception ex)
+                {
+                    r = false;
                 }
             }
 
             return r;
         }
 
-        //############################################
+        public int DelItem(int[] ids)
+        {
+            int r = 0;
+            List<WeixinAgentItem> items = this.GetItems();
+            
+            r =  items.RemoveAll(v => ids.Contains(v.id));
 
+            WeixinAgent weixinAgent = new WeixinAgent();
+            weixinAgent.AgentItem = items.ToArray();
+
+            try
+            {
+                string path = configPath;
+                XmlHelper.XmlSerializeToFile(weixinAgent, path, System.Text.Encoding.UTF8);
+            }
+            catch (Exception ex)
+            {
+                r = -1;
+            }
+
+            return r;
+        }
+
+        //############################################
 
 
 
