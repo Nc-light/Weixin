@@ -1,4 +1,4 @@
-﻿namespace GZH.Agent.Manager.Controllers.Agent.Response
+﻿namespace GZH.Agent.Manager.Controllers
 {
     public class MsgEntity
     {
@@ -13,7 +13,7 @@
         {
             r = new MsgEntity();
 
-            //CURD
+            //CUD
             switch (returnCode)
             {
                 //Create
@@ -61,6 +61,21 @@
                     r.returnCode = returnCode;
                     r.message = "删除失败，记录写入出错";
                     break;
+
+                //Login
+                case 4000:
+                    r.returnCode = returnCode;
+                    r.message = "登录成功";
+                    break;
+                case 4100:
+                    r.returnCode = returnCode;
+                    r.message = "登录失败，账号密码有误";
+                    break;
+                case 4101:
+                    r.returnCode = returnCode;
+                    r.message = "登录失败，账号失效";
+                    break;
+
             }
 
             return r;

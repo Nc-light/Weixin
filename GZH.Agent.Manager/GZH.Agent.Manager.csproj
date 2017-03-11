@@ -89,9 +89,10 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\Acct\AcctController.cs" />
     <Compile Include="Controllers\Agent\AgentController.cs" />
-    <Compile Include="Controllers\Agent\Response\MsgEntity.cs" />
-    <Compile Include="Controllers\TestController.cs" />
+    <Compile Include="Controllers\MsgEntity.cs" />
+    <Compile Include="Models\Account.cs" />
     <Compile Include="test.ashx.cs">
       <DependentUpon>test.ashx</DependentUpon>
     </Compile>
@@ -112,9 +113,7 @@
       <DependentUpon>Web.config</DependentUpon>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Models\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\GZH.CL\GZH.CL.csproj">
       <Project>{7ae3e236-2afb-4086-89c2-9b03a80eef32}</Project>

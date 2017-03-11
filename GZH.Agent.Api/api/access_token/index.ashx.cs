@@ -53,7 +53,7 @@ namespace GZH.Agent.Api.api.access_token
 
             AgentConfig agentConfig = new AgentConfig();
             WeixinAgent weixinAgent = agentConfig.GetConfig();
-            foreach (WeixinAgentItem item in weixinAgent.AgentItem)
+            foreach (WeixinAgentItem item in weixinAgent.agentItem)
             {
                 int id = item.id;
                 bool token = item.token;

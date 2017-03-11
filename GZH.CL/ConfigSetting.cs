@@ -10,6 +10,7 @@ namespace GZH.CL
         public static string weixin = configPath + "NCD.Weixin.config";
         public static string weixinWeb = configPath + "NCD.Weixin.Web.config";
         public static string weixinAgent = configPath + "NCD.Weixin.Agent.config";
+        public static string weixinAgentAccount = configPath + "NCD.Weixin.Agent.Adm.config";
 
         //private static string configPath = WebConfigurationManager.AppSettings["configPath"];
         //public static string weixin = configPath + WebConfigurationManager.AppSettings["weixin"];

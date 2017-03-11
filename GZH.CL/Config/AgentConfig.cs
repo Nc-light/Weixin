@@ -56,7 +56,7 @@ namespace GZH.CL.Config
             //logs.Fatal(weixinAgent.AgentItem.Length);
 
             Array arr =
-                (from weixinAgentItem in weixinAgent.AgentItem
+                (from weixinAgentItem in weixinAgent.agentItem
                  where (weixinAgentItem.id == id)
                  select weixinAgentItem).ToArray<WeixinAgentItem>();
 
@@ -76,7 +76,7 @@ namespace GZH.CL.Config
             WeixinAgent weixinAgent = GetConfig();
 
             List<WeixinAgentItem> list =
-                (from weixinAgentItem in weixinAgent.AgentItem
+                (from weixinAgentItem in weixinAgent.agentItem
                  select weixinAgentItem).ToList<WeixinAgentItem>();
 
             if (list.Count > 0)
@@ -95,7 +95,7 @@ namespace GZH.CL.Config
             WeixinAgent weixinAgent = GetConfig();
 
             List<string> list =
-                (from weixinAgentItem in weixinAgent.AgentItem
+                (from weixinAgentItem in weixinAgent.agentItem
                  select weixinAgentItem.agent).ToList<string>();
 
             if (list.Count > 0)
@@ -123,7 +123,7 @@ namespace GZH.CL.Config
         private int GetIdentity()
         {
             WeixinAgent weixinAgent = GetConfig();
-            List<int> list = (from weixinAgentItem in weixinAgent.AgentItem select weixinAgentItem.id).ToList<int>();
+            List<int> list = (from weixinAgentItem in weixinAgent.agentItem select weixinAgentItem.id).ToList<int>();
              
             return this.CreateRandom(list);
         }
@@ -155,7 +155,7 @@ namespace GZH.CL.Config
             items.Add(item);
 
             WeixinAgent weixinAgent = new WeixinAgent();
-            weixinAgent.AgentItem = items.ToArray();
+            weixinAgent.agentItem = items.ToArray();
             
             try
             {
@@ -194,7 +194,7 @@ namespace GZH.CL.Config
                     else
                         newItems.Add(i);
                 }
-                weixinAgent.AgentItem = newItems.ToArray();
+                weixinAgent.agentItem = newItems.ToArray();
                 
                 try
                 {
@@ -227,7 +227,7 @@ namespace GZH.CL.Config
 
                 WeixinAgent weixinAgent = new WeixinAgent();
                 items.Remove(item);
-                weixinAgent.AgentItem = items.ToArray();
+                weixinAgent.agentItem = items.ToArray();
 
                 try
                 {
@@ -252,7 +252,7 @@ namespace GZH.CL.Config
             r =  items.RemoveAll(v => ids.Contains(v.id));
 
             WeixinAgent weixinAgent = new WeixinAgent();
-            weixinAgent.AgentItem = items.ToArray();
+            weixinAgent.agentItem = items.ToArray();
 
             try
             {

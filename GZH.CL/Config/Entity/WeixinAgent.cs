@@ -8,7 +8,7 @@ namespace GZH.CL.Config.Entity
     public class WeixinAgent
     {
         [XmlArray("Agents"), XmlArrayItem("AgentItem")]
-        public WeixinAgentItem[] AgentItem { get; set; }
+        public WeixinAgentItem[] agentItem { get; set; }
     }
 
     [XmlRoot("Agents")]

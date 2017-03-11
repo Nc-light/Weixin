@@ -96,7 +96,7 @@ namespace GZH.Agent.Api.api.authorize
 
             AgentConfig agentConfig = new AgentConfig();
             WeixinAgent weixinAgent = agentConfig.GetConfig();
-            foreach (WeixinAgentItem item in weixinAgent.AgentItem)
+            foreach (WeixinAgentItem item in weixinAgent.agentItem)
             {
                 int id = item.id;
                 bool authorize = item.authorize;

@@ -86,7 +86,7 @@ namespace GZH.CL.JsSDK
 
             AgentConfig agentConfig = new AgentConfig();
             WeixinAgent weixinAgent = agentConfig.GetConfig();
-            foreach (WeixinAgentItem item in weixinAgent.AgentItem)
+            foreach (WeixinAgentItem item in weixinAgent.agentItem)
             {
                 string url = item.url;
                 bool signature = item.signature;

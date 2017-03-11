@@ -82,6 +82,7 @@
     <Content Include="config\NCD.Weixin.Web.config" />
     <Content Include="test.ashx" />
     <Content Include="test2.ashx" />
+    <Content Include="config\NCD.Weixin.Agent.Adm.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

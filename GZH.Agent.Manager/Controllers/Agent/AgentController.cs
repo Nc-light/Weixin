@@ -1,12 +1,11 @@
 ﻿using System;
+using System.Text;
+using System.Linq;
 using System.Collections.Generic;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 using GZH.CL.Config;
 using GZH.CL.Config.Entity;
 using log4net;
-using GZH.Agent.Manager.Controllers.Agent.Response;
 
 namespace GZH.Agent.Manager.Controllers.Agent
 {
@@ -21,28 +20,41 @@ namespace GZH.Agent.Manager.Controllers.Agent
         }
 
         /// <summary>
-        /// 
+        /// 获取全部分派记录
         /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        [Route("adm/agent/{id}")]
-        public WeixinAgentItem GetItem(int id)
-        {
-            return agentConfig.GetItem(id);
-        }
-
+        /// <returns>全部分派记录列表</returns>
         [Route("adm/agents/")]
         public List<WeixinAgentItem> GetItems()
         {
             return agentConfig.GetItems();
         }
 
+        /// <summary>
+        /// 获取单条分派记录
+        /// </summary>
+        /// <param name="id">记录id</param>
+        /// <returns>分派记录对象</returns>
+        [Route("adm/agent/{id}")]
+        public WeixinAgentItem GetItem(int id)
+        {
+            return agentConfig.GetItem(id);
+        }
+
+        /// <summary>
+        /// 获取申请方列表
+        /// </summary>
+        /// <returns>申请方列表</returns>
         [Route("adm/agents/applyers")]
         public List<string> GetAgentName()
         {
             return agentConfig.GetAgentName();
         }
 
+        /// <summary>
+        /// 添加分派记录
+        /// </summary>
+        /// <param name="item">待添加分派记录对象</param>
+        /// <returns>处理结果</returns>
         [Route("adm/agent/add/")]
         [HttpPost]
         public MsgEntity PostAgent(WeixinAgentItem item)
@@ -66,6 +78,11 @@ namespace GZH.Agent.Manager.Controllers.Agent
             return r;
         }
 
+        /// <summary>
+        /// 更新分派记录
+        /// </summary>
+        /// <param name="item">待更新分派记录对象</param>
+        /// <returns>处理结果</returns>
         [Route("adm/agent/update/")]
         [HttpPost]
         public MsgEntity PutAgent(WeixinAgentItem item)
@@ -85,6 +102,11 @@ namespace GZH.Agent.Manager.Controllers.Agent
             return r;
         }
 
+        /// <summary>
+        /// 单条删除分派记录
+        /// </summary>
+        /// <param name="id">待删除分派记录对象id</param>
+        /// <returns>处理结果</returns>
         [Route("adm/agent/del/{id}")]
         [HttpPost]
         public MsgEntity DelAgent(int id)
@@ -104,6 +126,11 @@ namespace GZH.Agent.Manager.Controllers.Agent
             return r;
         }
 
+        /// <summary>
+        /// 批量删除分派记录
+        /// </summary>
+        /// <param name="ids">待删除分派记录对象id数组</param>
+        /// <returns>处理结果</returns>
         [Route("adm/agent/del/")]
         [HttpPost]
         public MsgEntity DelAgents(int[] ids)
