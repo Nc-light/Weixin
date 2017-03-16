@@ -33,6 +33,10 @@
                     r.returnCode = returnCode;
                     r.message = "添加失败，记录id异常";
                     break;
+                case 1103:
+                    r.returnCode = returnCode;
+                    r.message = "添加失败，记录id";
+                    break;
 
                 //Update
                 case 2000:
@@ -75,7 +79,10 @@
                     r.returnCode = returnCode;
                     r.message = "登录失败，账号失效";
                     break;
-
+                case 4102:
+                    r.returnCode = returnCode;
+                    r.message = "登录超时";
+                    break;
             }
 
             return r;

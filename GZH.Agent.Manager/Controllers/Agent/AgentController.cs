@@ -1,11 +1,12 @@
 ﻿using System;
-using System.Text;
-using System.Linq;
 using System.Collections.Generic;
 using System.Web.Http;
 using GZH.CL.Config;
 using GZH.CL.Config.Entity;
 using log4net;
+using System.Web.Configuration;
+using System.Web;
+using GZH.CL.Common.Serialize;
 
 namespace GZH.Agent.Manager.Controllers.Agent
 {
@@ -17,7 +18,29 @@ namespace GZH.Agent.Manager.Controllers.Agent
         public AgentController()
         {
             agentConfig = new AgentConfig();
+            string sessionName = WebConfigurationManager.AppSettings["loginSessionName"];
+
+            if (HttpContext.Current.Session[sessionName] == null)
+            {
+                MsgEntity r;
+
+                ResponseMsg.SetEntity(out r, 4102);
+
+                HttpContext.Current.Response.Write(JsonHelper.ScriptSerialize(r, false));
+                HttpContext.Current.Response.End();
+            }
         }
+
+        /// <summary>
+        /// 获取SN
+        /// </summary>
+        /// <returns></returns>
+        [Route("adm/agent/sn/")]
+        public string GetSn()
+        {
+            return agentConfig.CreateSN();
+        }
+
 
         /// <summary>
         /// 获取全部分派记录
@@ -53,7 +76,7 @@ namespace GZH.Agent.Manager.Controllers.Agent
         /// <summary>
         /// 添加分派记录
         /// </summary>
-        /// <param name="item">待添加分派记录对象</param>
+        /// <param name="item">待添加分派记录对象(id:0)</param>
         /// <returns>处理结果</returns>
         [Route("adm/agent/add/")]
         [HttpPost]
@@ -61,19 +84,22 @@ namespace GZH.Agent.Manager.Controllers.Agent
         {
             MsgEntity r;
 
-            if (!agentConfig.IsExist(item.id))
+            if (item.id == 0)
             {
-                item = agentConfig.AddItem(item);
+                if (!agentConfig.IsExist(item.id))
+                {
+                    item = agentConfig.AddItem(item);
 
-                if (item == null)
-                    r = ResponseMsg.SetEntity(out r, 1101);
-                else if (item.id > 0)
-                    r = ResponseMsg.SetEntity(out r, 1000);
+                    if (item != null && item.id > 0)
+                        r = ResponseMsg.SetEntity(out r, 1000);
+                    else
+                        r = ResponseMsg.SetEntity(out r, 1101);
+                }
                 else
-                    r = ResponseMsg.SetEntity(out r, 1102);
+                    r = ResponseMsg.SetEntity(out r, 1100);
             }
             else
-                r = ResponseMsg.SetEntity(out r, 1100);
+                r = ResponseMsg.SetEntity(out r, 1102);
 
             return r;
         }

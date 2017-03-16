@@ -53,7 +53,6 @@ namespace GZH.CL.Config
         {
             WeixinAgentItem r = null;
             WeixinAgent weixinAgent = GetConfig();
-            //logs.Fatal(weixinAgent.AgentItem.Length);
 
             Array arr =
                 (from weixinAgentItem in weixinAgent.agentItem
@@ -151,6 +150,8 @@ namespace GZH.CL.Config
         /// <returns>处理结果</returns>
         public WeixinAgentItem AddItem(WeixinAgentItem item)
         {
+            item.id = this.GetIdentity();
+
             List<WeixinAgentItem> items = this.GetItems();
             items.Add(item);
 
@@ -165,6 +166,7 @@ namespace GZH.CL.Config
             catch (Exception ex)
             {
                 item = null;
+                logs.Debug("AddItem", ex);
             }
             
 
@@ -195,7 +197,7 @@ namespace GZH.CL.Config
                         newItems.Add(i);
                 }
                 weixinAgent.agentItem = newItems.ToArray();
-                
+
                 try
                 {
                     string path = configPath;
@@ -205,6 +207,7 @@ namespace GZH.CL.Config
                 catch (Exception ex)
                 {
                     r = false;
+                    logs.Debug("UpdateItem Exception", ex);
                 }
             }
 
@@ -238,6 +241,7 @@ namespace GZH.CL.Config
                 catch (Exception ex)
                 {
                     r = false;
+                    logs.Debug("DelItem", ex);
                 }
             }
 
@@ -262,6 +266,7 @@ namespace GZH.CL.Config
             catch (Exception ex)
             {
                 r = -1;
+                logs.Debug("DelItem", ex);
             }
 
             return r;
@@ -285,11 +290,9 @@ namespace GZH.CL.Config
             {
                 r = GetFromFile();
                 SetWeixinAgent2Cache(cacheName, r);
-                //logs.Fatal("GetConfig From File......");
             }
             else
             {
-                //logs.Fatal("GetConfig From Cache......");
                 r = (WeixinAgent)HttpContext.Current.Cache.Get(cacheName);
             }
             return r;
@@ -310,9 +313,9 @@ namespace GZH.CL.Config
                 HttpContext.Current.Cache.Add(cacheName, weixinAgent, dep, DateTime.Now.Add(new TimeSpan(30, 0, 0, 0)), System.Web.Caching.Cache.NoSlidingExpiration, CacheItemPriority.NotRemovable, onRemove);
                 //logs.Fatal("SetToken2Cache >> "+ cacheName);
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                //NCD.WebLog.SysWebLog.WriteLog("error:" + e.ToString());
+                logs.Debug("SetWeixinAgent2Cache", ex);
             }
         }
 
@@ -322,12 +325,10 @@ namespace GZH.CL.Config
             string[] scopes = new string[] { "snsapi_base", "snsapi_userinfo" };
             foreach (string scope in scopes)
             {
-                //string cacheName = GZH.CL.Config.ConfigSetting.GetWeixinWeb().SnsTokenCacheName + "_" + scope;
-                //if (HttpContext.Current.Cache[cacheName] != null)
                 oauth2Token.RemoveCache(scope);
             }
 
-            logs.Fatal("AgentConfig RemovedCallback to remove token");
+            logs.Info("AgentConfig RemovedCallback to remove token");
         }
 
     }

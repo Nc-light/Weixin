@@ -58,8 +58,9 @@ namespace GZH.CL.Access_Token
                 //HttpContext.Current.Cache.Add(cacheName, token, null, DateTime.Now.Add(new TimeSpan(2, 0, 0)), System.Web.Caching.Cache.NoSlidingExpiration, CacheItemPriority
                 //logs.Fatal("SetToken2Cache >> "+ cacheName);
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
+                
                 //NCD.WebLog.SysWebLog.WriteLog("error:" + e.ToString());
             }
         }

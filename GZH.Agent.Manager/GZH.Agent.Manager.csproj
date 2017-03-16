@@ -89,13 +89,26 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="api\access_token\index.ashx.cs">
+      <DependentUpon>index.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="api\authorize\index.ashx.cs">
+      <DependentUpon>index.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="api\authorize\redirect_uri.ashx.cs">
+      <DependentUpon>redirect_uri.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="api\manager\getSn.ashx.cs">
+      <DependentUpon>getSn.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="api\signature\index.ashx.cs">
+      <DependentUpon>index.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="App_Start\WebApiExceptionFilterAttribute.cs" />
     <Compile Include="Controllers\Acct\AcctController.cs" />
     <Compile Include="Controllers\Agent\AgentController.cs" />
     <Compile Include="Controllers\MsgEntity.cs" />
     <Compile Include="Models\Account.cs" />
-    <Compile Include="test.ashx.cs">
-      <DependentUpon>test.ashx</DependentUpon>
-    </Compile>
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -104,8 +117,19 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
-    <Content Include="test.ashx" />
-    <Content Include="config\Log4Net.config" />
+    <Content Include="config\NCD.Weixin.Agent.Adm.config" />
+    <Content Include="config\NCD.Weixin.Agent.config" />
+    <Content Include="config\NCD.Weixin.config" />
+    <Content Include="config\NCD.Weixin.Web.config" />
+    <Content Include="api\access_token\index.ashx" />
+    <Content Include="api\authorize\index.ashx" />
+    <Content Include="api\authorize\redirect_uri.ashx" />
+    <Content Include="api\manager\getSn.ashx" />
+    <Content Include="api\signature\index.ashx" />
+    <Content Include="config\Log4Net.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <None Include="Properties\PublishProfiles\GZH.Agent.Manager.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
